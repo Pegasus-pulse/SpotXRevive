@@ -3,6 +3,31 @@ title SpotXRevive -Update SpotX
 
 setlocal enabledelayedexpansion
 
+if exist "%appdata%\spicetify" (
+    icacls "%appdata%\spicetify" /reset /T > NUL 2>&1
+)
+
+if exist "%localappdata%\spicetify" (
+    icacls "%localappdata%\spicetify" /reset /T > NUL 2>&1
+)
+
+set respicetify=0
+set respotify=0
+
+echo Removing Spicetify if installed...
+for %%d in ("%appdata%\spicetify" "%localappdata%\spicetify") do (
+    if exist "%%d" (
+        rd /s/q "%%d" > NUL 2>&1
+        set /a respicetify+=1
+    )
+)
+
+if !respicetify! == 0 (
+    echo Spicetify is not installed or not found.
+) else (
+    echo Spicetify has been successfully removed.
+)
+
 if exist "%localappdata%\Spotify\Update" (
     icacls "%localappdata%\Spotify\Update" /reset /T > NUL 2>&1
 )
