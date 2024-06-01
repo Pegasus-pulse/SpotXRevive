@@ -32,12 +32,10 @@ if exist "%localappdata%\Spotify\Update" (
     icacls "%localappdata%\Spotify\Update" /reset /T > NUL 2>&1
 )
 
-set actions=0
-
 echo Checking if Spotify is installed or not... 
 if exist "%appdata%\Spotify\Spotify.exe" (
     start "" /wait "%appdata%\Spotify\Spotify.exe" /UNINSTALL /SILENT
-    set /a actions+=1
+    set /a respotify+=1
 )
 
 timeout /t 1 > NUL 2>&1
@@ -45,16 +43,16 @@ timeout /t 1 > NUL 2>&1
 for %%d in ("%appdata%\Spotify" "%localappdata%\Spotify") do (
     if exist "%%d" (
         rd /s/q "%%d" > NUL 2>&1
-        set /a actions+=1
+        set /a respotify+=1
     )
 )
 
 if exist "%temp%\SpotifyUninstall.exe" (
     del /s /q  "%temp%\SpotifyUninstall.exe" > NUL 2>&1
-    set /a actions+=1
+    set /a respotify+=1
 )
 
-if !actions! == 0 (
+if !respotify! == 0 (
     echo Spotify is not installed or not found.
 ) else (
     echo Spotify has been successfully uninstalled.
